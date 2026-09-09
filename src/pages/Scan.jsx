@@ -108,10 +108,6 @@ export default function Scan() {
           />
           <button onClick={() => go()} className="btn-primary px-5">Buka</button>
         </div>
-        <div className="flex gap-2">
-          <button onClick={()=>nav("/location/EL-A-B01")} className="flex-1 bg-primary-light border border-border text-text-main px-3 py-2 rounded-lg text-xs hover:bg-background">Contoh: EL-A-B01</button>
-          <button onClick={()=>nav("/location/MK-B-C01")} className="flex-1 bg-surface border border-border text-text-secondary px-3 py-2 rounded-lg text-xs hover:bg-background">MK-B-C01</button>
-        </div>
       </div>
     </div>
   );

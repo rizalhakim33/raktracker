@@ -17,6 +17,7 @@ import Login from "./pages/Login.jsx";
 import ReorderList from "./pages/ReorderList.jsx";
 import CostReport from "./pages/CostReport.jsx";
 import TransferForm from "./pages/TransferForm.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Landing from "./pages/Landing.jsx";
 
 export default function App() {
@@ -32,17 +33,19 @@ export default function App() {
             <Route path="/part/:partId/transaction" element={<TransactionForm />} />
             <Route path="/transfer" element={<TransferForm />} />
             <Route path="/transfer/:partId" element={<TransferForm />} />
-            <Route path="/admin/locations" element={<LocationsList />} />
-            <Route path="/admin/locations/create" element={<LocationsCreate />} />
-            <Route path="/admin/locations/import" element={<LocationsImport />} />
-            <Route path="/admin/parts" element={<PartsList />} />
-            <Route path="/admin/parts/create" element={<PartsCreate />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/history" element={<History />} />
             <Route path="/search" element={<Search />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/reorder" element={<ReorderList />} />
-            <Route path="/cost" element={<CostReport />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/admin/locations" element={<LocationsList />} />
+              <Route path="/admin/locations/create" element={<LocationsCreate />} />
+              <Route path="/admin/locations/import" element={<LocationsImport />} />
+              <Route path="/admin/parts" element={<PartsList />} />
+              <Route path="/admin/parts/create" element={<PartsCreate />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/history" element={<History />} />
+              <Route path="/reorder" element={<ReorderList />} />
+              <Route path="/cost" element={<CostReport />} />
+            </Route>
           </Route>
         </Routes>
       </ToastProvider>
