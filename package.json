@@ -6,10 +6,15 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "start": "node server.js",
     "lint": "oxlint",
     "preview": "vite preview"
   },
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
+    "express": "^5.2.1",
     "firebase": "^12.18.0",
     "html5-qrcode": "^2.3.8",
     "jspdf": "^4.2.1",
