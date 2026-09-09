@@ -4,7 +4,8 @@ import { signOut } from "firebase/auth";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { auth, db, isFirebaseConfigured } from "../lib/firebase.js";
 import { useAuthState } from "../hooks/useAuth.js";
-import { APP_NAME } from "../lib/constants.js";
+import { APP_NAME, isAdmin } from "../lib/constants.js";
+import DemoBanner from "./DemoBanner.jsx";
 
 function Icon({ d, ...p }) {
   return (
@@ -24,6 +25,7 @@ const NAV_ITEMS = [
   },
   {
     label: "Master Data",
+    adminOnly: true,
     items: [
       { to: "/admin/locations", icon: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10", title: "Rak / Bin" },
       { to: "/admin/parts", icon: "M20 7H4a1 1 0 0 0-1 1v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8a1 1 0 0 0-1-1z M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2", title: "Spare Part" },
@@ -31,6 +33,7 @@ const NAV_ITEMS = [
   },
   {
     label: "Laporan",
+    adminOnly: true,
     items: [
       { to: "/dashboard", icon: "M18 20V10M12 20V4M6 20v-6", title: "Dashboard" },
       { to: "/reorder", icon: "M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83", title: "Reorder" },
@@ -47,6 +50,7 @@ export default function AppLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [lowStockCount, setLowStockCount] = useState(0);
   const isActive = (p) => pathname === p || pathname.startsWith(p + "/");
+  const userAdmin = isAdmin(user);
 
   useEffect(() => {
     setMobileOpen(false);
@@ -83,7 +87,7 @@ export default function AppLayout() {
       </div>
 
       <nav className="flex-1 overflow-y-auto py-3 px-3 space-y-5">
-        {NAV_ITEMS.map((group) => (
+        {NAV_ITEMS.filter(group => !group.adminOnly || userAdmin).map((group) => (
           <div key={group.label}>
             <div className="text-[11px] font-semibold tracking-wider text-text-secondary/60 uppercase px-2 mb-1.5">
               {group.label}
@@ -184,7 +188,7 @@ export default function AppLayout() {
             </button>
           </div>
           <nav className="flex-1 overflow-y-auto py-3 px-3 space-y-5">
-            {NAV_ITEMS.map((group) => (
+            {NAV_ITEMS.filter(group => !group.adminOnly || userAdmin).map((group) => (
               <div key={group.label}>
                 <div className="text-[11px] font-semibold tracking-wider text-text-secondary/60 uppercase px-2 mb-1.5">
                   {group.label}
@@ -246,6 +250,7 @@ export default function AppLayout() {
       )}
 
       <main className="flex-1 min-w-0 p-4 md:p-6 pt-[72px] md:pt-6">
+        <DemoBanner />
         <Outlet />
       </main>
     </div>

@@ -19,6 +19,10 @@ export const KEPERLUAN_OPTIONS = ["Breakdown", "Preventive", "Restock", "Pinjam"
 export const APP_NAME = "RakTrack";
 export const APP_SHORT_NAME = "RakTrack";
 
+// Role system - only this email gets full admin access
+export const ADMIN_EMAIL = "admin@pabrik.com";
+export const isAdmin = (user) => user?.email === ADMIN_EMAIL;
+
 // Estimasi restock — rata pakai 90 hari terakhir
 export const RESTOCK_PERIODE_HARI = 90;
 export const RESTOCK_MIN_TRANSAKSI = 3;
