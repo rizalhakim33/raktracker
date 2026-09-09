@@ -91,7 +91,7 @@ export default function Landing(){
             <a href="#fitur" className="text-[13px] font-medium text-text-secondary hover:text-text-main transition-colors px-3 py-1.5">Fitur</a>
             <a href="#cara-kerja" className="text-[13px] font-medium text-text-secondary hover:text-text-main transition-colors px-3 py-1.5">Cara Kerja</a>
             <a href="#harga" className="text-[13px] font-medium text-text-secondary hover:text-text-main transition-colors px-3 py-1.5">Harga</a>
-            <Link to="/scan" className="btn-primary px-4 py-2 text-[13px] ml-2">Coba Demo</Link>
+            <Link to="/scan" className="btn-primary px-4 py-2 text-[13px] ml-2">Coba Sekarang</Link>
           </div>
           <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden p-1.5 -mr-1.5 rounded-lg hover:bg-background transition-colors">
             {mobileOpen ? (
@@ -110,7 +110,7 @@ export default function Landing(){
             <a href="#fitur" onClick={() => setMobileOpen(false)} className="block text-[13px] font-medium text-text-secondary hover:text-text-main px-3 py-2 rounded-lg hover:bg-background">Fitur</a>
             <a href="#cara-kerja" onClick={() => setMobileOpen(false)} className="block text-[13px] font-medium text-text-secondary hover:text-text-main px-3 py-2 rounded-lg hover:bg-background">Cara Kerja</a>
             <a href="#harga" onClick={() => setMobileOpen(false)} className="block text-[13px] font-medium text-text-secondary hover:text-text-main px-3 py-2 rounded-lg hover:bg-background">Harga</a>
-            <Link to="/scan" onClick={() => setMobileOpen(false)} className="block text-center btn-primary px-4 py-2.5 text-[13px] mt-2">Coba Demo</Link>
+            <Link to="/scan" onClick={() => setMobileOpen(false)} className="block text-center btn-primary px-4 py-2.5 text-[13px] mt-2">Coba Sekarang</Link>
           </div>
         )}
       </nav>
@@ -132,7 +132,7 @@ export default function Landing(){
                 Scan, ambil, dan stok langsung tercatat. Tanpa ribet, tanpa kehilangan.
               </p>
               <div className="mt-8 flex flex-wrap justify-center md:justify-start gap-3">
-                <Link to="/scan" className="btn-primary px-7 py-3 text-[14px] shadow-soft hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">Coba Pilot <span className="ml-2">→</span></Link>
+                <Link to="/scan" className="btn-primary px-7 py-3 text-[14px] shadow-soft hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">Coba Sekarang <span className="ml-2">→</span></Link>
                 <a href="#fitur" className="btn-secondary px-7 py-3 text-[14px] hover:shadow-soft hover:-translate-y-0.5 transition-all duration-200">Lihat Fitur</a>
               </div>
               <div className="mt-8 flex flex-wrap justify-center md:justify-start gap-6 text-[13px] font-medium text-text-secondary">
@@ -233,6 +233,11 @@ export default function Landing(){
             </div>
           ))}
         </div>
+        <div className="text-center mt-10">
+          <Link to="/scan" className="inline-flex items-center gap-2 text-[13px] font-semibold text-primary hover:text-primary/80 transition-colors">
+            Coba Sekarang <span>→</span>
+          </Link>
+        </div>
       </section>
 
       {/* CARA KERJA */}
@@ -257,6 +262,11 @@ export default function Landing(){
                 <p className="mt-2 text-[13px] leading-6 text-text-secondary max-w-[32ch] mx-auto">{s.d}</p>
               </div>
             ))}
+          </div>
+          <div className="text-center mt-10">
+            <Link to="/scan" className="inline-flex items-center gap-2 text-[13px] font-semibold text-primary hover:text-primary/80 transition-colors">
+              Coba Sekarang <span>→</span>
+            </Link>
           </div>
         </div>
       </section>
@@ -295,7 +305,7 @@ export default function Landing(){
               <li className="flex gap-2.5"><span className="text-primary font-bold">✓</span> 2 user admin</li>
               <li className="flex gap-2.5"><span className="text-primary font-bold">✓</span> 1 bulan support</li>
             </ul>
-            <a href="https://wa.me/6280000000000" target="_blank" className="mt-6 block text-center btn-primary w-full text-[13px]">Mulai Sekarang</a>
+            <a href="https://wa.me/6280000000000" target="_blank" className="mt-6 block text-center btn-primary w-full text-[13px]">Coba Sekarang</a>
           </div>
           <div className="border border-border rounded-2xl p-6 bg-surface shadow-card hover:shadow-soft hover:-translate-y-1 transition-all duration-300">
             <div className="text-[13px] font-semibold text-text-secondary">Custom</div>
@@ -328,6 +338,12 @@ export default function Landing(){
               <FaqItem key={i} question={faq.q} answer={faq.a} />
             ))}
           </div>
+          <div className="text-center mt-10">
+            <p className="text-[13px] text-text-secondary mb-3">Masih ada pertanyaan lain? Coba langsung atau hubungi kami.</p>
+            <Link to="/scan" className="inline-flex items-center gap-2 text-[13px] font-semibold text-primary hover:text-primary/80 transition-colors">
+              Coba Sekarang <span>→</span>
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -338,7 +354,7 @@ export default function Landing(){
             <div className="font-bold text-[16px]">Siap coba di rak Anda?</div>
             <div className="text-[13px] text-white/70 mt-1">Scan demo EL-A-001, rasakan langsung bagaimana RakTrack membantu tim maintenance Anda.</div>
           </div>
-          <Link to="/scan" className="bg-white text-primary-dark rounded-lg px-7 py-3 text-[13px] font-bold whitespace-nowrap hover:bg-primary-light hover:shadow-soft transition-all duration-200">Mulai Pilot <span className="ml-1">→</span></Link>
+          <Link to="/scan" className="bg-white text-primary-dark rounded-lg px-7 py-3 text-[13px] font-bold whitespace-nowrap hover:bg-primary-light hover:shadow-soft transition-all duration-200">Coba Sekarang <span className="ml-1">→</span></Link>
         </div>
       </section>
 
