@@ -15,23 +15,8 @@ steps:
       - '--build-arg'
       - 'VITE_FIREBASE_APP_ID=${_VITE_FIREBASE_APP_ID}'
       - '-t'
-      - 'gcr.io/$PROJECT_ID/raktrack'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/raktrack/raktrack'
       - '.'
-
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    args:
-      - 'run'
-      - 'deploy'
-      - 'raktrack'
-      - '--image'
-      - 'gcr.io/$PROJECT_ID/raktrack'
-      - '--region'
-      - 'europe-west1'
-      - '--platform'
-      - 'managed'
-      - '--allow-unauthenticated'
-      - '--port'
-      - '8080'
 
 substitutions:
   _VITE_FIREBASE_API_KEY: ''
@@ -42,4 +27,4 @@ substitutions:
   _VITE_FIREBASE_APP_ID: ''
 
 images:
-  - 'gcr.io/$PROJECT_ID/raktrack'
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/raktrack/raktrack'
