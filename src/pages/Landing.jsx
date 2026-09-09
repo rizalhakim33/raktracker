@@ -131,6 +131,34 @@ export default function Landing(){
         </div>
       </section>
 
+      {/* HERO IMAGE GALLERY */}
+      <section className="bg-background border-b border-border">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="relative rounded-2xl overflow-hidden shadow-card hover:shadow-soft hover:-translate-y-1 transition-all duration-300 aspect-square">
+              <img src="/images/scan-phone.jpg" alt="Scan QR Code dengan HP" className="w-full h-full object-cover" loading="lazy" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+              <div className="absolute bottom-3 left-3 right-3 text-white text-[12px] font-medium">Scan langsung dari kamera HP</div>
+            </div>
+            <div className="relative rounded-2xl overflow-hidden shadow-card hover:shadow-soft hover:-translate-y-1 transition-all duration-300 aspect-square">
+              <img src="/images/warehouse-worker.jpg" alt="Worker scan QR di gudang" className="w-full h-full object-cover" loading="lazy" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+              <div className="absolute bottom-3 left-3 right-3 text-white text-[12px] font-medium">Di rak gudang manapun</div>
+            </div>
+            <div className="relative rounded-2xl overflow-hidden shadow-card hover:shadow-soft hover:-translate-y-1 transition-all duration-300 aspect-square">
+              <img src="/images/desk-scan.jpg" alt="Scan QR di meja kerja" className="w-full h-full object-cover" loading="lazy" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+              <div className="absolute bottom-3 left-3 right-3 text-white text-[12px] font-medium">Cocok untuk area kerja</div>
+            </div>
+            <div className="relative rounded-2xl overflow-hidden shadow-card hover:shadow-soft hover:-translate-y-1 transition-all duration-300 aspect-square">
+              <img src="/images/inventory-scan.jpg" alt="Inventory scan di warehouse" className="w-full h-full object-cover" loading="lazy" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+              <div className="absolute bottom-3 left-3 right-3 text-white text-[12px] font-medium">Tim maintenance siap pakai</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* FITUR — 6 Cards */}
       <section id="fitur" className="max-w-6xl mx-auto px-4 md:px-6 py-14">
         <div className="text-center max-w-xl mx-auto mb-10">
@@ -159,13 +187,16 @@ export default function Landing(){
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { n:"01", t:"Tempel QR pada bin", d:"Gunakan label QR yang tahan lama dan mudah dibaca oleh kamera HP." },
-              { n:"02", t:"Teknisi scan saat ambil", d:"Buka browser, scan QR, pilih jumlah — langsung tercatat tanpa install apapun." },
-              { n:"03", t:"Stok otomatis tercatat", d:"Admin langsung melihat stok, lokasi, dan histori pengambilan secara real-time." },
+              { n:"01", t:"Tempel QR pada bin", d:"Gunakan label QR yang tahan lama dan mudah dibaca oleh kamera HP.", img:"/images/warehouse-worker.jpg" },
+              { n:"02", t:"Teknisi scan saat ambil", d:"Buka browser, scan QR, pilih jumlah — langsung tercatat tanpa install apapun.", img:"/images/scan-phone.jpg" },
+              { n:"03", t:"Stok otomatis tercatat", d:"Admin langsung melihat stok, lokasi, dan histori pengambilan secara real-time.", img:"/images/inventory-scan.jpg" },
             ].map((s, i) => (
               <div key={i} className="text-center">
-                <div className="w-12 h-12 rounded-full bg-primary text-white grid place-items-center text-sm font-extrabold mx-auto shadow-card">{s.n}</div>
-                <h3 className="mt-4 text-[15px] font-bold">{s.t}</h3>
+                <div className="relative rounded-2xl overflow-hidden shadow-card mb-5 aspect-video">
+                  <img src={s.img} alt={s.t} className="w-full h-full object-cover" loading="lazy" />
+                  <div className="absolute top-3 left-3 w-10 h-10 rounded-full bg-primary text-white grid place-items-center text-sm font-extrabold shadow-card">{s.n}</div>
+                </div>
+                <h3 className="text-[15px] font-bold">{s.t}</h3>
                 <p className="mt-2 text-[13px] leading-6 text-text-secondary max-w-[32ch] mx-auto">{s.d}</p>
               </div>
             ))}
@@ -232,10 +263,16 @@ export default function Landing(){
         <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 flex flex-col md:flex-row gap-4 justify-between text-[12px] text-text-secondary">
           <div className="flex gap-2.5 items-start">
             <img src="/logo.svg" className="w-6 h-6" alt=""/>
-            <div><div className="font-bold text-text-main">RakTrack</div><div>Spare part inventory untuk maintenance yang lebih terkontrol.</div></div>
+            <div>
+              <div className="font-bold text-text-main">RakTrack</div>
+              <div>© 2026 RakTrack — Aplikasi tracker spare part & inventory maintenance berbasis QR untuk pabrik di Indonesia</div>
+            </div>
           </div>
-          <div className="flex gap-6"><a href="#fitur" className="hover:text-text-main font-medium transition-colors">Fitur</a><a href="#cara-kerja" className="hover:text-text-main font-medium transition-colors">Cara Kerja</a><a href="#harga" className="hover:text-text-main font-medium transition-colors">Harga</a></div>
-          <div>© 2026 RakTrack. All rights reserved.</div>
+          <div className="flex gap-6">
+            <a href="#fitur" className="hover:text-text-main font-medium transition-colors">Fitur</a>
+            <a href="#cara-kerja" className="hover:text-text-main font-medium transition-colors">Cara Kerja</a>
+            <a href="#harga" className="hover:text-text-main font-medium transition-colors">Harga</a>
+          </div>
         </div>
       </footer>
     </div>
