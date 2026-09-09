@@ -352,7 +352,7 @@ export default function Landing(){
         <div className="rounded-2xl px-8 py-7 flex flex-col md:flex-row items-center justify-between gap-5" style={{background:"linear-gradient(135deg, #174A61 0%, #256B8C 100%)"}}>
           <div className="text-white text-center md:text-left">
             <div className="font-bold text-[16px]">Siap coba di rak Anda?</div>
-            <div className="text-[13px] text-white/70 mt-1">Scan demo EL-A-001, rasakan langsung bagaimana RakTrack membantu tim maintenance Anda.</div>
+            <div className="text-[13px] text-white/70 mt-1">Coba sendiri bagaimana RakTrack mempermudah pencarian dan pencatatan spare part di pabrik Anda.</div>
           </div>
           <Link to="/scan" className="bg-white text-primary-dark rounded-lg px-7 py-3 text-[13px] font-bold whitespace-nowrap hover:bg-primary-light hover:shadow-soft transition-all duration-200">Coba Sekarang <span className="ml-1">→</span></Link>
         </div>

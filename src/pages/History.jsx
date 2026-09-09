@@ -60,7 +60,7 @@ export default function History(){
   },[rows, locFilter, dateFrom, dateTo]);
 
   function exportCsv(){
-    const csv = Papa.unparse(filtered.map(r=>({ timestamp: fmt(r.timestamp), part_id:r.part_id, location_id:r.location_id, tipe:r.tipe, jumlah:r.jumlah, harga_satuan_snapshot:r.harga_satuan_snapshot ?? "", total_biaya:r.total_biaya ?? (r.harga_satuan_snapshot ? Number(r.jumlah)*Number(r.harga_satuan_snapshot) : ""), stok_sesudah:r.stok_sesudah, nama_pengambil:r.nama_pengambil, keperluan:r.keperluan, catatan:r.catatan||"" })));
+    const csv = Papa.unparse(filtered.map(r=>({ timestamp: fmt(r.timestamp), part_id:r.part_id, location_id:r.location_id, location_id_asal:r.location_id_asal||"", location_id_tujuan:r.location_id_tujuan||"", tipe:r.tipe, jumlah:r.jumlah, harga_satuan_snapshot:r.harga_satuan_snapshot ?? "", total_biaya:r.total_biaya ?? (r.harga_satuan_snapshot ? Number(r.jumlah)*Number(r.harga_satuan_snapshot) : ""), stok_sesudah:r.stok_sesudah, nama_pengambil:r.nama_pengambil, keperluan:r.keperluan, catatan:r.catatan||"" })));
     const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"}); const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=`history_${new Date().toISOString().slice(0,10)}.csv`; a.click(); URL.revokeObjectURL(url);
   }
 
@@ -70,7 +70,7 @@ export default function History(){
     <div className="max-w-4xl mx-auto space-y-4">
       <div>
         <h1 className="label-lg text-text-main">Riwayat Stok</h1>
-        <p className="caption text-text-secondary mt-0.5">Lihat semua transaksi masuk dan keluar. Gunakan filter untuk mencari berdasarkan tipe, lokasi, atau rentang tanggal.</p>
+        <p className="caption text-text-secondary mt-0.5">Lihat semua transaksi masuk, keluar, dan transfer. Gunakan filter untuk mencari berdasarkan tipe, lokasi, atau rentang tanggal.</p>
       </div>
 
       <div className="flex gap-2 flex-wrap items-center">
@@ -79,6 +79,7 @@ export default function History(){
           <option value="">Semua tipe</option>
           <option value="keluar">Keluar</option>
           <option value="masuk">Masuk</option>
+          <option value="transfer">Transfer</option>
         </select>
         <select value={locFilter} onChange={e=>setLocFilter(e.target.value)}
           className="border border-border bg-surface text-text-main rounded-lg px-2.5 py-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none">
@@ -118,8 +119,8 @@ export default function History(){
               <tr key={r.history_id} className="border-t border-border hover:bg-background/50">
                 <td className="p-3 text-xs whitespace-nowrap text-text-secondary">{fmt(r.timestamp)}</td>
                 <td className="p-3 font-mono text-xs"><Link to={`/part/${r.part_id}`} className="text-text-secondary hover:text-primary">{r.part_id.slice(0,8)}</Link></td>
-                <td className="p-3 font-mono text-xs"><Link to={`/location/${r.location_id}`} className="text-text-secondary hover:text-primary">{r.location_id}</Link></td>
-                <td className="p-3 text-center"><span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${r.tipe==="keluar"?"bg-danger/10 text-danger":"bg-success/10 text-success"}`}>{r.tipe}</span></td>
+                <td className="p-3 font-mono text-xs"><Link to={`/location/${r.location_id}`} className="text-text-secondary hover:text-primary">{r.location_id}</Link>{r.tipe==="transfer" && r.location_id_tujuan ? <span className="text-text-secondary"> → <Link to={`/location/${r.location_id_tujuan}`} className="hover:text-primary">{r.location_id_tujuan}</Link></span> : null}</td>
+                <td className="p-3 text-center"><span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${r.tipe==="keluar"?"bg-danger/10 text-danger":r.tipe==="transfer"?"bg-violet-100 text-violet-700":"bg-success/10 text-success"}`}>{r.tipe==="transfer"?`${r.location_id_asal||r.location_id} → ${r.location_id_tujuan}`:r.tipe}</span></td>
                 <td className="p-3 text-center text-sm font-medium text-text-main">{r.jumlah}</td>
                 <td className="p-3 text-right text-xs font-mono text-text-main">{biaya != null ? formatRupiah(biaya) : "—"}</td>
                 <td className="p-3 text-center text-xs font-mono text-text-main">{r.stok_sesudah ?? "—"}</td>

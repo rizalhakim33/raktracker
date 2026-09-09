@@ -88,9 +88,10 @@ export default function PartDetail() {
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-3 gap-2">
         <Link to={`/part/${partId}/transaction?type=keluar`} className="btn-primary text-center py-3">Ambil Stok</Link>
         <Link to={`/part/${partId}/transaction?type=masuk`} className="btn-secondary text-center py-3">Tambah Stok</Link>
+        <Link to={`/transfer/${partId}`} className="btn-secondary text-center py-3">Transfer</Link>
       </div>
 
       <div className="bg-surface border border-border rounded-xl p-4 shadow-card">
@@ -103,7 +104,7 @@ export default function PartDetail() {
               <div key={h.history_id} className="flex justify-between items-center bg-background rounded-lg p-3">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${h.tipe==="keluar"?"bg-danger/10 text-danger":"bg-success/10 text-success"}`}>{h.tipe}</span>
+                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${h.tipe==="keluar"?"bg-danger/10 text-danger":h.tipe==="transfer"?"bg-violet-100 text-violet-700":"bg-success/10 text-success"}`}>{h.tipe==="transfer"?`${h.location_id_asal||h.location_id} → ${h.location_id_tujuan}`:h.tipe}</span>
                     <span className="text-sm font-medium text-text-main">{h.jumlah} pcs</span>
                     {h.total_biaya != null && <span className="text-xs text-text-secondary">{formatRupiah(h.total_biaya)}</span>}
                   </div>

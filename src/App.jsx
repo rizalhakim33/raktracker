@@ -16,6 +16,7 @@ import Search from "./pages/Search.jsx";
 import Login from "./pages/Login.jsx";
 import ReorderList from "./pages/ReorderList.jsx";
 import CostReport from "./pages/CostReport.jsx";
+import TransferForm from "./pages/TransferForm.jsx";
 import Landing from "./pages/Landing.jsx";
 
 export default function App() {
@@ -29,6 +30,8 @@ export default function App() {
             <Route path="/location/:locationId" element={<LocationDetail />} />
             <Route path="/part/:partId" element={<PartDetail />} />
             <Route path="/part/:partId/transaction" element={<TransactionForm />} />
+            <Route path="/transfer" element={<TransferForm />} />
+            <Route path="/transfer/:partId" element={<TransferForm />} />
             <Route path="/admin/locations" element={<LocationsList />} />
             <Route path="/admin/locations/create" element={<LocationsCreate />} />
             <Route path="/admin/locations/import" element={<LocationsImport />} />

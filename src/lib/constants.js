@@ -14,7 +14,7 @@ export const LOCATION_REGEX = /^[A-Z]{2}-[A-Z]-[A-Z][0-9]{2,3}$/; // EL-A-B01
 export const SECTION_REGEX = /^[A-Z]$/;
 export const BIN_REGEX = /^[A-Z][0-9]{2,3}$/;
 
-export const KEPERLUAN_OPTIONS = ["Breakdown", "Preventive", "Restock", "Pinjam", "Lainnya"];
+export const KEPERLUAN_OPTIONS = ["Breakdown", "Preventive", "Restock", "Pinjam", "Transfer", "Lainnya"];
 
 export const APP_NAME = "RakTrack";
 export const APP_SHORT_NAME = "RakTrack";
