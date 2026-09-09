@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { doc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { db, isFirebaseConfigured } from "../lib/firebase.js";
 import { submitTransfer } from "../lib/transfer.js";
+import { savePendingTransaction } from "../lib/offline.js";
 import { useToast } from "../components/Toast.jsx";
 import { SkeletonBlock } from "../components/Skeleton.jsx";
 
@@ -67,7 +68,19 @@ export default function TransferForm() {
       });
       toast.success(`Transfer sukses. Stok ${part?.location_id}: ${res.stokAsalBaru} · ${locTujuan}: ${res.stokTujuanBaru}`);
       nav(`/location/${part?.location_id || ""}`, { replace: true });
-    } catch (e2) { setErr(e2.message); toast.error("Gagal: " + e2.message); }
+    } catch (e2) {
+      if (!navigator.onLine) {
+        savePendingTransaction({
+          partId, locationId: part?.location_id || "", locationIdTujuan: locTujuan,
+          tipe: "transfer", jumlah: n, namaPengambil: nama, catatan,
+        });
+        toast.info("Tersimpan lokal — akan dikirim saat online");
+        nav(`/location/${part?.location_id || ""}`, { replace: true });
+      } else {
+        setErr(e2.message);
+        toast.error("Gagal: " + e2.message);
+      }
+    }
     setBusy(false);
   }
 

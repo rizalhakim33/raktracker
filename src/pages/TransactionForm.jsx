@@ -5,6 +5,7 @@ import { db, isFirebaseConfigured } from "../lib/firebase.js";
 import { KEPERLUAN_OPTIONS } from "../lib/constants.js";
 import { submitStockTransaction } from "../lib/stock.js";
 import { updateEstimasiDiPart } from "../lib/restock.js";
+import { savePendingTransaction } from "../lib/offline.js";
 import { useToast } from "../components/Toast.jsx";
 import { SkeletonBlock } from "../components/Skeleton.jsx";
 
@@ -53,7 +54,19 @@ export default function TransactionForm() {
       try { await updateEstimasiDiPart(partId, res.stokSesudah); } catch (eEst) { console.warn("Estimasi gagal:", eEst.message); }
       toast.success(`Sukses ${type} ${n} pcs. Stok ${res.stokSesudah}`);
       nav(`/location/${part?.location_id || ""}`, { replace: true });
-    } catch (e2) { setErr(e2.message); toast.error("Gagal: " + e2.message); }
+    } catch (e2) {
+      if (!navigator.onLine) {
+        savePendingTransaction({
+          partId, locationId: part?.location_id || "", tipe: type, jumlah: n,
+          namaPengambil: nama, keperluan, catatan,
+        });
+        toast.info("Tersimpan lokal — akan dikirim saat online");
+        nav(`/location/${part?.location_id || ""}`, { replace: true });
+      } else {
+        setErr(e2.message);
+        toast.error("Gagal: " + e2.message);
+      }
+    }
     setBusy(false);
   }
 

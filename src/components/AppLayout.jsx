@@ -6,6 +6,7 @@ import { auth, db, isFirebaseConfigured } from "../lib/firebase.js";
 import { useAuthState } from "../hooks/useAuth.js";
 import { APP_NAME, isAdmin } from "../lib/constants.js";
 import DemoBanner from "./DemoBanner.jsx";
+import OfflineQueueBanner from "./OfflineQueueBanner.jsx";
 
 function Icon({ d, ...p }) {
   return (
@@ -251,6 +252,7 @@ export default function AppLayout() {
 
       <main className="flex-1 min-w-0 p-4 md:p-6 pt-[72px] md:pt-6">
         <DemoBanner />
+        <OfflineQueueBanner />
         <Outlet />
       </main>
     </div>
