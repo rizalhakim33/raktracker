@@ -1,0 +1,59 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() { return request.auth != null; }
+    function isAdmin() {
+      // MVP: cukup login saja. Perketat nanti jadi:
+      // return request.auth.token.admin == true || request.auth.token.email == "admin@pabrik.com";
+      return isSignedIn();
+    }
+    function validLocationId(id) {
+      return id.matches("^[A-Z]{2}-[A-Z]-[A-Z][0-9]{2,3}$");
+    }
+    function validCategoryCode(code) {
+      return code in ["EL","MK","PH","DR","CS"];
+    }
+
+    match /locations/{locationId} {
+      allow read: if isSignedIn();
+      allow create: if isAdmin()
+                    && validLocationId(locationId)
+                    && request.resource.data.location_id == locationId
+                    && validCategoryCode(request.resource.data.kode_kategori)
+                    && request.resource.data.section_rak.matches("^[A-Z]$")
+                    && request.resource.data.kode_bin.matches("^[A-Z][0-9]{2,3}$")
+                    && request.resource.data.kategori is string;
+      allow update: if isAdmin()
+                    // location_id tidak boleh diubah
+                    && request.resource.data.location_id == resource.data.location_id;
+      allow delete: if isAdmin();
+    }
+
+    function validVed(v) { return v in ["Vital","Essential","Desirable"]; }
+
+    match /parts/{partId} {
+      allow read: if isSignedIn();
+      allow create: if isAdmin()
+                    && (!("kekritisan" in request.resource.data) || validVed(request.resource.data.kekritisan))
+                    && (!("harga_satuan" in request.resource.data) || request.resource.data.harga_satuan == null || (request.resource.data.harga_satuan is number && request.resource.data.harga_satuan >= 0));
+      allow update: if isAdmin()
+                    && (!("kekritisan" in request.resource.data) || validVed(request.resource.data.kekritisan))
+                    && (!("harga_satuan" in request.resource.data) || request.resource.data.harga_satuan == null || (request.resource.data.harga_satuan is number && request.resource.data.harga_satuan >= 0));
+      allow delete: if isAdmin();
+    }
+
+    match /stock_history/{historyId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn()
+                    && request.resource.data.part_id is string
+                    && request.resource.data.tipe in ["keluar","masuk"]
+                    && request.resource.data.jumlah is number
+                    && request.resource.data.jumlah > 0
+                    && request.resource.data.timestamp is timestamp
+                    && (!("harga_satuan_snapshot" in request.resource.data) || request.resource.data.harga_satuan_snapshot == null || (request.resource.data.harga_satuan_snapshot is number && request.resource.data.harga_satuan_snapshot >= 0))
+                    && (!("total_biaya" in request.resource.data) || request.resource.data.total_biaya == null || (request.resource.data.total_biaya is number && request.resource.data.total_biaya >= 0));
+      allow update, delete: if false;
+    }
+  }
+}
