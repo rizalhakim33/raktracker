@@ -80,13 +80,6 @@ export default function Login() {
         {err && <div className="text-sm text-danger bg-danger/5 border border-danger/20 rounded-lg p-2">{err}</div>}
         <button disabled={busy} className="w-full btn-primary py-3 disabled:opacity-50">{busy?"Memproses...":"Login"}</button>
       </form>
-      <div className="bg-surface border border-border rounded-xl p-4 shadow-card">
-        <div className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-2">Akun Demo</div>
-        <div className="text-sm text-text-secondary space-y-1">
-          <p>Gunakan akun apapun untuk mode demo (fitur terbatas).</p>
-          <p className="text-primary font-medium">Login sebagai admin@pabrik.com untuk full akses.</p>
-        </div>
-      </div>
     </div>
   );
 }
