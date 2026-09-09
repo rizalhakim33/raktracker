@@ -1,16 +1,108 @@
-# React + Vite
+# RakTracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Sistem manajemen inventaris spare part berbasis QR Code untuk lingkungan pabrik/maintenance.
 
-Currently, two official plugins are available:
+## Fitur
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Scan QR Code** - Scan stiker QR pada bin/rak untuk akses cepat daftar part
+- **Manajemen Lokasi** - Buat lokasi secara single atau bulk (3 segmen: Kategori-Section-Bin)
+- **Transaksi Stok** - Keluar/Masuk stok dengan validasi dan history tracking
+- **Dashboard** - Monitoring stok menipis (low-stock alert)
+- **Cetak QR** - Export QR Code dalam format PDF A4 (2x2 grid) untuk dicetak
+- **Import/Export CSV** - Bulk import lokasi dan export data
+- **PWA** - Installable di HP sebagai aplikasi
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Frontend:** React 19 + Vite + Tailwind CSS
+- **Backend:** Firebase (Firestore + Auth)
+- **Libraries:** html5-qrcode, jspdf, papaparse, qrcode
 
-## Expanding the Oxlint configuration
+## Setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+### 1. Install dependencies
+
+```bash
+npm install
+```
+
+### 2. Konfigurasi Firebase
+
+Copy `.env.example` ke `.env` dan isi dengan Firebase config project kamu:
+
+```bash
+cp .env.example .env
+```
+
+### 3. Jalankan development server
+
+```bash
+npm run dev
+```
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Jalankan dev server (Vite) |
+| `npm run build` | Build production ke folder `dist/` |
+| `npm run start` | Jalankan production server (Express) |
+| `npm run lint` | Lint dengan Oxlint |
+
+## Deploy ke Google Cloud Run
+
+```bash
+gcloud auth login
+gcloud config set project <PROJECT_ID>
+gcloud run deploy raktracker --source . --port 8080 --allow-unauthenticated
+```
+
+Atau deploy via Firebase Hosting:
+
+```bash
+npm run build
+firebase deploy --only hosting
+```
+
+## Struktur Database
+
+### Collections
+
+- **`locations`** - Data lokasi/bin (document ID = `location_id`)
+- **`parts`** - Data spare part
+- **`stock_history`** - Log transaksi stok
+
+### Format `location_id`
+
+```
+EL-A-B01
+│ │  │
+│ │  └── Kode Bin (B01, C12, dst)
+│ └──── Section Rak (A, B, C, dst)
+└────── Kode Kategori (EL, MK, PH, DR, CS)
+```
+
+| Kode | Kategori |
+|------|----------|
+| EL | Elektrikal & Kontrol |
+| MK | Mekanikal |
+| PH | Pneumatik & Hidraulik |
+| DR | Drive & Motor |
+| CS | Consumable/Fast-moving |
+
+## Akses User
+
+| Fitur | Admin | Teknisi |
+|-------|:-----:|:-------:|
+| Scan QR | ✓ | ✓ |
+| Lihat Part | ✓ | ✓ |
+| Transaksi Keluar/Masuk | ✓ | ✓ |
+| CRUD Lokasi | ✓ | ✗ |
+| Bulk Generate | ✓ | ✗ |
+| Import/Export CSV | ✓ | ✗ |
+| Export PDF | ✓ | ✗ |
+| Dashboard | ✓ | ✗ |
+
+## License
+
+Private
