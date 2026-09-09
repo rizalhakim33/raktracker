@@ -1,14 +1,15 @@
+import "dotenv/config";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, collection, getDocs, query, where, doc, updateDoc, serverTimestamp } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCXMble3QQIuYbhqx45857cIYy5Q-4m_lY",
-  authDomain: "part-tracker-ed51e.firebaseapp.com",
-  projectId: "part-tracker-ed51e",
-  storageBucket: "part-tracker-ed51e.firebasestorage.app",
-  messagingSenderId: "965049994135",
-  appId: "1:965049994135:web:f6b108f62811e4d5b0d2d2",
+  apiKey: process.env.VITE_FIREBASE_API_KEY,
+  authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.VITE_FIREBASE_APP_ID,
 };
 const PERIODE = 90, MIN_TX=3, MIN_HARI=30;
 
