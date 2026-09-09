@@ -1,6 +1,36 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+function FaqItem({ question, answer }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border border-border rounded-xl bg-background overflow-hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between px-5 py-4 text-left"
+      >
+        <span className="text-[14px] font-semibold text-text-main pr-4">{question}</span>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={`w-5 h-5 text-text-secondary flex-shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
+      {open && (
+        <div className="px-5 pb-4 text-[13px] leading-6 text-text-secondary">
+          {answer}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function IcoQr(props){ return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" {...props}><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3"/><path d="M14 17h3v3"/><path d="M17 14h3v3"/></svg>; }
 function IcoZap(props){ return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" {...props}><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>; }
 function IcoClock(props){ return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" {...props}><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>; }
@@ -131,23 +161,30 @@ export default function Landing(){
         </div>
       </section>
 
-      {/* STATS */}
+      {/* STATS + SOCIAL PROOF */}
       <section className="bg-background border-b border-border">
-        <div className="max-w-6xl mx-auto px-4 md:px-6 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {[
-            { icon: IcoQr, label: "1 QR", sub: "untuk setiap bin" },
-            { icon: IcoZap, label: "< 10 detik", sub: "untuk mencatat pengambilan" },
-            { icon: IcoClock, label: "24/7", sub: "riwayat stok" },
-            { icon: IcoCloud, label: "0", sub: "install server di pabrik" },
-          ].map((s, i) => (
-            <div key={i} className="flex flex-col items-center group">
-              <div className="w-11 h-11 rounded-full bg-surface border border-border grid place-items-center text-primary shadow-card group-hover:shadow-soft group-hover:-translate-y-0.5 transition-all duration-200">
-                <s.icon className="w-5 h-5"/>
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center mb-10">
+            {[
+              { icon: IcoQr, label: "1 QR", sub: "untuk setiap bin" },
+              { icon: IcoZap, label: "< 10 detik", sub: "untuk mencatat pengambilan" },
+              { icon: IcoClock, label: "24/7", sub: "riwayat stok" },
+              { icon: IcoCloud, label: "0", sub: "install server di pabrik" },
+            ].map((s, i) => (
+              <div key={i} className="flex flex-col items-center group">
+                <div className="w-11 h-11 rounded-full bg-surface border border-border grid place-items-center text-primary shadow-card group-hover:shadow-soft group-hover:-translate-y-0.5 transition-all duration-200">
+                  <s.icon className="w-5 h-5"/>
+                </div>
+                <div className="text-[17px] font-extrabold mt-3">{s.label}</div>
+                <div className="text-[13px] text-text-secondary mt-0.5">{s.sub}</div>
               </div>
-              <div className="text-[17px] font-extrabold mt-3">{s.label}</div>
-              <div className="text-[13px] text-text-secondary mt-0.5">{s.sub}</div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <div className="text-center">
+            <p className="text-[14px] text-text-secondary max-w-2xl mx-auto leading-relaxed">
+              Sedang dipakai tim maintenance di pabrik manufaktur — mengganti pencatatan manual yang sering bikin stok hilang jejak dan part telat dibeli.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -235,8 +272,9 @@ export default function Landing(){
             <div className="text-[13px] font-semibold text-text-secondary">Starter</div>
             <div className="text-[22px] font-extrabold mt-1">Rp 3 jt <span className="text-[12px] font-normal text-text-secondary">/ paket</span></div>
             <ul className="mt-5 space-y-2.5 text-[13px] text-text-secondary">
-              <li className="flex gap-2.5"><span className="text-success font-bold">✓</span> Hingga 20 bin (60 QR)</li>
-              <li className="flex gap-2.5"><span className="text-success font-bold">✓</span> Fitur dasar</li>
+              <li className="flex gap-2.5"><span className="text-success font-bold">✓</span> Hingga 20 bin (20 QR)</li>
+              <li className="flex gap-2.5"><span className="text-success font-bold">✓</span> Scan & catat keluar/masuk stok</li>
+              <li className="flex gap-2.5"><span className="text-success font-bold">✓</span> Dashboard stok rendah</li>
               <li className="flex gap-2.5"><span className="text-success font-bold">✓</span> 2 user admin</li>
               <li className="flex gap-2.5"><span className="text-success font-bold">✓</span> Hosting / PWA</li>
             </ul>
@@ -247,8 +285,13 @@ export default function Landing(){
             <div className="text-[13px] font-semibold text-primary">Standard</div>
             <div className="text-[22px] font-extrabold mt-1">Rp 5 jt <span className="text-[12px] font-normal text-text-secondary">/ paket</span></div>
             <ul className="mt-5 space-y-2.5 text-[13px] text-text-secondary">
-              <li className="flex gap-2.5"><span className="text-primary font-bold">✓</span> Hingga 50 bin (100 QR)</li>
+              <li className="flex gap-2.5"><span className="text-primary font-bold">✓</span> Hingga 50 bin (50 QR)</li>
+              <li className="flex gap-2.5"><span className="text-primary font-bold">✓</span> Scan & catat keluar/masuk stok</li>
+              <li className="flex gap-2.5"><span className="text-primary font-bold">✓</span> Dashboard stok rendah</li>
               <li className="flex gap-2.5"><span className="text-primary font-bold">✓</span> Multi lokasi & kategori</li>
+              <li className="flex gap-2.5"><span className="text-primary font-bold">✓</span> Kekritisan part (Vital / Essential / Desirable)</li>
+              <li className="flex gap-2.5"><span className="text-primary font-bold">✓</span> Estimasi kapan stok habis</li>
+              <li className="flex gap-2.5"><span className="text-primary font-bold">✓</span> Reorder list otomatis</li>
               <li className="flex gap-2.5"><span className="text-primary font-bold">✓</span> 2 user admin</li>
               <li className="flex gap-2.5"><span className="text-primary font-bold">✓</span> 1 bulan support</li>
             </ul>
@@ -263,6 +306,27 @@ export default function Landing(){
               <li className="flex gap-2.5"><span className="text-success font-bold">✓</span> On-site training</li>
             </ul>
             <button className="mt-6 block w-full text-center btn-secondary text-[13px]">Konsultasi</button>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="bg-surface border-y border-border">
+        <div className="max-w-3xl mx-auto px-4 md:px-6 py-14">
+          <div className="text-center mb-10">
+            <h2 className="text-[24px] md:text-[28px] font-extrabold tracking-tight">Pertanyaan yang sering ditanyakan</h2>
+          </div>
+          <div className="space-y-3">
+            {[
+              { q: "Data pabrik kami aman nggak?", a: "Data disimpan terpisah per pabrik, tidak dicampur dengan pabrik lain. Bisa export semua data ke CSV kapan saja, tidak ada vendor lock-in." },
+              { q: "Kalau internet di pabrik mati, gimana?", a: "RakTrack butuh koneksi internet untuk scan dan update stok real-time. Kalau internet pabrik cukup stabil (WiFi kantor biasa), ini tidak jadi masalah harian." },
+              { q: "Bisa custom kategori part sendiri nggak?", a: "Bisa. Kategori, kode lokasi, dan struktur bin disesuaikan dengan tata letak rak pabrik masing-masing saat setup awal." },
+              { q: "Berapa lama proses setup-nya?", a: "Tergantung paket. Starter biasanya selesai dalam hitungan hari (generate QR, training 1 jam), Standard butuh sedikit lebih lama karena input part lebih banyak." },
+              { q: "Kalau nanti mau nambah bin/part di luar paket, gimana?", a: "Bisa upgrade paket kapan saja, atau tambah kuota bin secara terpisah, tidak perlu ganti paket semua dari awal." },
+              { q: "Perlu install aplikasi khusus di HP?", a: "Tidak. Semua bisa langsung dipakai dari browser HP, tanpa install dari toko aplikasi apa pun." },
+            ].map((faq, i) => (
+              <FaqItem key={i} question={faq.q} answer={faq.a} />
+            ))}
           </div>
         </div>
       </section>
