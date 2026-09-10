@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
 import { db, isFirebaseConfigured } from "../lib/firebase.js";
 import FilterBar from "../components/FilterBar.jsx";
 import VedBadge from "../components/VedBadge.jsx";
 import { formatHari } from "../lib/restock.js";
-import { RESTOCK_WARN_HARI } from "../lib/constants.js";
+import { RESTOCK_WARN_HARI, CODE_TO_CATEGORY } from "../lib/constants.js";
 import { formatRupiah, hitungNilaiStok } from "../lib/cost.js";
+import { exportSingleQrPdf } from "../lib/pdf.js";
 
 const MOCK_PARTS = [
   { part_id: "p1", nama_part: "Kontaktor Schneider LC1D09", location_id: "EL-A-B01", brand: "Schneider", part_number: "LC1D09M7", stok_saat_ini: 4, stok_minimum: 2, satuan: "pcs" },
@@ -19,8 +20,10 @@ export default function LocationDetail() {
   const [q, setQ] = useState("");
   const [filterLow, setFilterLow] = useState(false);
   const [parts, setParts] = useState([]);
+  const [locDoc, setLocDoc] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [showQrMenu, setShowQrMenu] = useState(false);
 
   useEffect(()=>{
     let cancelled = false;
@@ -33,9 +36,13 @@ export default function LocationDetail() {
         return;
       }
       try{
-        const snap = await getDocs(query(collection(db,"parts"), where("location_id","==",locationId)));
-        const data = snap.docs.map(d=>({ part_id:d.id, ...d.data() }));
+        const [partsSnap, locSnap] = await Promise.all([
+          getDocs(query(collection(db,"parts"), where("location_id","==",locationId))),
+          getDoc(doc(db,"locations",locationId)),
+        ]);
+        const data = partsSnap.docs.map(d=>({ part_id:d.id, ...d.data() }));
         if(!cancelled) setParts(data);
+        if(!cancelled && locSnap.exists()) setLocDoc(locSnap.data());
       } catch(e){ console.error(e); if(!cancelled) { setParts([]); setError("Gagal memuat data: " + e.message); } }
       if(!cancelled) setLoading(false);
     }
@@ -55,6 +62,24 @@ export default function LocationDetail() {
 
   const categoryCode = locationId.split("-")[0];
   const section = locationId.split("-")[1];
+  const kodeBin = locationId.split("-")[2];
+
+  const locationObj = useMemo(() => {
+    if (locDoc) return locDoc;
+    return {
+      location_id: locationId,
+      kode_kategori: categoryCode,
+      kategori: CODE_TO_CATEGORY[categoryCode] || categoryCode,
+      section_rak: section,
+      kode_bin: kodeBin,
+      deskripsi_lokasi: "",
+    };
+  }, [locDoc, locationId, categoryCode, section, kodeBin]);
+
+  function handlePrintQr(format) {
+    exportSingleQrPdf(locationObj, format);
+    setShowQrMenu(false);
+  }
 
   return (
     <div className="max-w-3xl mx-auto space-y-4">
@@ -69,9 +94,18 @@ export default function LocationDetail() {
         </p>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 flex-wrap">
         <Link to="/scan" className="btn-secondary text-xs py-1.5 px-3">← Scan</Link>
         <Link to="/admin/parts/create" className="btn-primary text-xs py-1.5 px-3">+ Tambah Part</Link>
+        <div className="relative">
+          <button onClick={() => setShowQrMenu(!showQrMenu)} className="btn-secondary text-xs py-1.5 px-3">Cetak QR Label ▾</button>
+          {showQrMenu && (
+            <div className="absolute top-full left-0 mt-1 bg-surface border border-border rounded-lg shadow-soft z-10 min-w-[180px]">
+              <button onClick={() => handlePrintQr("label-100x150")} className="block w-full text-left px-3 py-2 text-xs text-text-main hover:bg-background rounded-t-lg">Label 100x150mm</button>
+              <button onClick={() => handlePrintQr("a4-2x2")} className="block w-full text-left px-3 py-2 text-xs text-text-main hover:bg-background rounded-b-lg">A4 2x2 grid</button>
+            </div>
+          )}
+        </div>
       </div>
 
       {error && <div className="bg-danger/5 border border-danger/20 rounded-xl p-3 text-sm text-danger">{error}</div>}

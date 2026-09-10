@@ -18,6 +18,7 @@ export const KEPERLUAN_OPTIONS = ["Breakdown", "Preventive", "Restock", "Pinjam"
 
 export const APP_NAME = "RakTrack";
 export const APP_SHORT_NAME = "RakTrack";
+export const NAMA_PERUSAHAAN = "PT. Indonesia Manufacturing";
 
 // Role system - only this email gets full admin access
 export const ADMIN_EMAIL = "admin@pabrik.com";

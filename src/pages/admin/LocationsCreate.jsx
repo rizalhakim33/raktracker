@@ -20,6 +20,7 @@ export default function LocationsCreate() {
   const [preview, setPreview] = useState([]);
   const [saving, setSaving] = useState(false);
   const [result, setResult] = useState(null);
+  const [qrFormat, setQrFormat] = useState("a4-2x2");
 
   const kodeKategori = CATEGORIES.find((c) => c.label === kategori)?.code || "EL";
 
@@ -138,8 +139,13 @@ export default function LocationsCreate() {
         {result && (
           <div className="bg-success/10 border border-success/20 rounded-xl p-4">
             <div className="text-sm font-medium text-text-main">Berhasil {result.length} lokasi dibuat {isFirebaseConfigured() ? "di Firestore" : "(mock)"}</div>
-            <div className="flex gap-2 mt-3 flex-wrap">
-              <button onClick={() => exportQrPdf(result)} className="btn-secondary text-xs py-1.5 px-3">Download PDF</button>
+            <div className="flex gap-2 mt-3 flex-wrap items-center">
+              <select value={qrFormat} onChange={(e) => setQrFormat(e.target.value)}
+                className="border border-border bg-background text-text-main rounded-lg px-2 py-1.5 text-xs focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+                <option value="a4-2x2">A4 2x2 (4 label/halaman)</option>
+                <option value="label-100x150">Label 100x150mm</option>
+              </select>
+              <button onClick={() => exportQrPdf(result, qrFormat)} className="btn-secondary text-xs py-1.5 px-3">Download PDF</button>
               <button onClick={() => exportLocationsCsv(result)} className="btn-secondary text-xs py-1.5 px-3">Download CSV</button>
               <Link to="/admin/locations" className="btn-primary text-xs py-1.5 px-3">Ke List</Link>
             </div>

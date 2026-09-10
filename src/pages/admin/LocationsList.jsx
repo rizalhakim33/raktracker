@@ -22,6 +22,7 @@ export default function LocationsList() {
   const [selected, setSelected] = useState(() => new Set());
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [qrFormat, setQrFormat] = useState("a4-2x2");
 
   async function load() {
     if (!isFirebaseConfigured()) return;
@@ -84,7 +85,12 @@ export default function LocationsList() {
           <Link to="/admin/locations/create" className="btn-primary text-xs py-1.5 px-3">+ Tambah</Link>
           <Link to="/admin/locations/import" className="btn-secondary text-xs py-1.5 px-3">Import CSV</Link>
           <button onClick={() => exportLocationsCsv(exportRows)} className="btn-secondary text-xs py-1.5 px-3">Export CSV</button>
-          <button onClick={() => exportQrPdf(exportRows)} className="btn-secondary text-xs py-1.5 px-3">Export PDF</button>
+          <select value={qrFormat} onChange={(e) => setQrFormat(e.target.value)}
+            className="border border-border bg-background text-text-main rounded-lg px-2 py-1.5 text-xs focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+            <option value="a4-2x2">A4 2x2</option>
+            <option value="label-100x150">Label 100x150mm</option>
+          </select>
+          <button onClick={() => exportQrPdf(exportRows, qrFormat)} className="btn-secondary text-xs py-1.5 px-3">Export PDF</button>
         </div>
       </div>
 
