@@ -23,9 +23,6 @@ steps:
       - --region=europe-west1
       - --quiet
 
-images:
-  - europe-west1-docker.pkg.dev/project-3a413078-a015-4c2b-bf4/cloud-run-source-deploy/rizalhakim33-raktracker/raktrack:$COMMIT_SHA
-
 options:
   logging: CLOUD_LOGGING_ONLY
   requestedVerifyOption: VERIFIED
